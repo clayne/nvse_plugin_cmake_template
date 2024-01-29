@@ -5,7 +5,7 @@ ExternalProject_Add(NVSE
         GIT_TAG "master"
         SOURCE_DIR "${CMAKE_BINARY_DIR}/NVSE"
         CONFIGURE_COMMAND ""
-        BUILD_COMMAND msbuild /m /t:Build /p:Platform=Win32 /p:Configuration=Release ${CMAKE_BINARY_DIR}/NVSE/nvse/nvse.sln && msbuild /m /p:MD /t:Build /p:Platform=Win32 /p:Configuration=Release ${CMAKE_BINARY_DIR}/NVSE/common/common_vc9.vcxproj
+        BUILD_COMMAND msbuild /m /t:Build /p:Platform=Win32 /p:Configuration=Release ${CMAKE_BINARY_DIR}/NVSE/nvse/nvse.sln && msbuild /m /t:Build /p:Platform=Win32 /p:Configuration=Release ${CMAKE_BINARY_DIR}/NVSE/common/common_vc9.vcxproj
         INSTALL_COMMAND ""
         TEST_COMMAND ""
 )
