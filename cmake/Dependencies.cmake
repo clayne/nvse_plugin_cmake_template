@@ -1,19 +1,29 @@
-include(ExternalProject)
+include(FetchContent)
 
-ExternalProject_Add(NVSE
-        GIT_REPOSITORY "https://github.com/xNVSE/NVSE.git"
-        GIT_TAG "master"
-        SOURCE_DIR "${CMAKE_BINARY_DIR}/NVSE"
-        CONFIGURE_COMMAND ""
-        BUILD_COMMAND msbuild /m /t:Build /p:Platform=Win32 /p:Configuration=Release ${CMAKE_BINARY_DIR}/NVSE/nvse/nvse.sln && msbuild /m /t:Build /p:Platform=Win32 /p:Configuration=Release ${CMAKE_BINARY_DIR}/NVSE/common/common_vc9.vcxproj
-        INSTALL_COMMAND ""
-        TEST_COMMAND ""
-)
+if (BUILD_NVSE)
+    FetchContent_Declare(
+            NVSE
+            GIT_REPOSITORY "https://github.com/xNVSE/NVSE"
+            GIT_TAG "master"
+    )
 
-include_directories("${CMAKE_BINARY_DIR}/NVSE")
+    FetchContent_GetProperties(NVSE)
 
-include_directories("${CMAKE_BINARY_DIR}/NVSE/nvse")
+    if (NOT NVSE_POPULATED)
+        FetchContent_Populate(NVSE)
+    endif ()
 
-link_libraries("${CMAKE_BINARY_DIR}/NVSE/common/Release VC9/common_vc9.lib")
+    message("-- Building NVSE")
 
-link_libraries("${CMAKE_BINARY_DIR}/NVSE/nvse/Release/nvse_1_4.lib")
+    set(NVSE_MSBUILD_ARGS /p:OutDir=${nvse_BINARY_DIR}/ /p:Configuration=Release /p:Platform=Win32 ${nvse_SOURCE_DIR}/nvse/nvse.sln)
+
+    execute_process(COMMAND msbuild ${NVSE_MSBUILD_ARGS} COMMAND_ERROR_IS_FATAL ANY)
+else ()
+    if ("$ENV{NVSE_PATH}" STREQUAL "")
+        message(FATAL_ERROR "Couldn't find NVSE_PATH! Please set this environment variable or enable BUILD_NVSE!")
+    endif ()
+
+    set(nvse_SOURCE_DIR "$ENV{NVSE_PATH}")
+
+    set(nvse_BINARY_DIR "$ENV{NVSE_PATH}")
+endif ()

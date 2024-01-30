@@ -1,8 +1,10 @@
-include(SourceList)
+include("${PROJECT_SOURCE_DIR}/cmake/SourceList.cmake")
 
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+include("${PROJECT_SOURCE_DIR}/cmake/Macros.cmake")
 
 add_library("${PROJECT_NAME}" SHARED "${SOURCES}")
+
+target_add_nvse("${PROJECT_NAME}")
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     target_compile_options("${PROJECT_NAME}" PRIVATE

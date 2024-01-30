@@ -1,15 +1,19 @@
 cmake_minimum_required(VERSION 3.26.4)
 
+option(BUILD_NVSE "Should NVSE be downloaded and built using MSBuild?" ON)
+
+message("-- Options:")
+
+message("\tBUILD_NVSE: ${BUILD_NVSE}")
+
 project(
-        NVSEPlugin
+        NVSECMakePlugin
         LANGUAGES CXX
-        VERSION 1.0.0
+        VERSION 1.1.0
 )
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 
-list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
-
-include(Dependencies)
+include("${PROJECT_SOURCE_DIR}/cmake/Dependencies.cmake")
 
 add_subdirectory(src)
